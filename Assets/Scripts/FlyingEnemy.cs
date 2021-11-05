@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class FlyingEnemy : Enemy
 {
-    public GameObject childAlienMole;
+    [SerializeField]
+    private GameObject childAlienMole;
 
     private bool hasMovedYet = false;
 
     private float radius = 2;
     private float speed = Mathf.PI / 2;
+
     private float currentAngle;
 
     public void SetParameters(float radius, float speed)
@@ -34,12 +36,14 @@ public class FlyingEnemy : Enemy
 
         currentAngle += speed * Time.deltaTime;
 
+        // Moving in a circle around the player
         Vector3 newPosition = new Vector3(0, this.transform.position.y, 0);
         newPosition.x += radius * Mathf.Cos(currentAngle);
         newPosition.z += radius * Mathf.Sin(currentAngle);
 
         this.transform.position = newPosition;
 
+        // Always looking at the camera
         Vector3 targetCamera = new Vector3(- this.transform.position.x, this.transform.position.y + childAlienMole.transform.position.y, - this.transform.position.z);
         childAlienMole.transform.LookAt(targetCamera);
     }

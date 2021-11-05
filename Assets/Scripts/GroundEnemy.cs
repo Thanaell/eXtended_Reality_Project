@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class GroundEnemy : Enemy
 {
-    private bool hasFinishedLerp = false;
-
+    [SerializeField]
     private float digUpTime = 0.7f;
+
     private float elapsedTime = 0;
 
     private Vector3 startPosition;
     private Vector3 targetPosition;
+    private bool hasFinishedLerp = false;
 
     protected override void Start()
     {
@@ -30,9 +31,10 @@ public class GroundEnemy : Enemy
 
     protected override void Move()
     {
+        // I'M STILL STANDING
         if (!hasFinishedLerp)
         {
-            // I'M STILL STANDING
+            // The mole spawns undergrounf and lerps up
             float interpolationRatio = elapsedTime / digUpTime;
             this.transform.position = Vector3.Lerp(startPosition, targetPosition, interpolationRatio);
 

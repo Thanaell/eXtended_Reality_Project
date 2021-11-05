@@ -5,15 +5,16 @@ using UnityEngine.Events;
 
 abstract public class Enemy : MonoBehaviour
 {
-    public GameObject particleSystem;
+    [SerializeField]
+    private GameObject particleSystem;
 
-    // Set bool to true if the mmole is flying
     public UnityEvent<bool> moleDestroyed;
 
     private IEnumerator despawnCoroutine;
     
     protected virtual void Start()
     {
+        // binding the destroy event to the enemy spawner
         moleDestroyed.AddListener(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<EnemySpawner>().MoleDespawned);
     }
 
@@ -30,7 +31,6 @@ abstract public class Enemy : MonoBehaviour
         GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(0.7f);
         particleSystem.GetComponent<ParticleSystem>().Stop();
-
         InvokeDestroyEvent();
         Destroy(this.gameObject);
     }

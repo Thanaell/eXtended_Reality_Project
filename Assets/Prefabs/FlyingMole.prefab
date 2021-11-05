@@ -4823,9 +4823,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 1987895845588038167}
-  moleDestroyed:
-    m_PersistentCalls:
-      m_Calls: []
   childAlienMole: {fileID: 6892433857469290701}
 --- !u!135 &7313814267341789521
 SphereCollider:

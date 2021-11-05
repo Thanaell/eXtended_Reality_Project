@@ -5,28 +5,39 @@ using UnityEngine.XR;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public float firstDrawTime;
-    public float drawTimeStep;
-    public float spawnProbability;
-    public float spawnMalusFactor;
-    public float meanSpawnAngle;
-    public float deviationspawnAngle;
+    [SerializeField]
+    private float firstDrawTime; //delay at the app launch
+    [SerializeField]
+    private float drawTimeStep; // delay between two random draws to see if spawn should happen
+    [SerializeField]
+    private float spawnProbability; // probability to spawn
+    [SerializeField]
+    private float spawnMalusFactor; // malus to apply to the probability to spawn
+    [SerializeField]
+    private float meanSpawnAngle; // mean angle to spawn
+    [SerializeField]
+    private float deviationspawnAngle; // standard variation to spawn
 
-    public GameObject groundMolePrefab;
-    public GameObject flyingMolePrefab;
+    [SerializeField]
+    private GameObject groundMolePrefab;
+    [SerializeField]
+    private GameObject flyingMolePrefab;
 
     private float nextDrawTime;
 
+    // Harcoded values for the spawning system
+    // TODO : make it better !
     private float minRadius = 5f;
     private float maxRadius = 6.5f;
-    private float minSpeed = - Mathf.PI / 6;
-    private float maxSpeed = Mathf.PI / 6;
+    private float minSpeed = - Mathf.PI / 8;
+    private float maxSpeed = Mathf.PI / 8;
     private float minHeight = 1.5f;
     private float maxHeight = 3f;
 
     private GameObject groundMole;
     private GameObject flyingMole;
 
+    // Draw in a gaussian function around mean, with a standard deviation
     public static float GaussianDraw(float deviation, float mean)
     {
         float u, v, S;
@@ -49,10 +60,12 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
+        // if there isn't one flying mole and one ground mole
         if (Time.time >= nextDrawTime && !(groundMole && flyingMole))
         {
             float drawResult = Random.Range(0, 1f);
 
+            // if there isn't any enemu, spawn proba is the normal one
             if (!flyingMole && !groundMole)
             {
                 bool isFlyingMole = (Random.Range(0, 1f) >= 0.5);
@@ -69,6 +82,7 @@ public class EnemySpawner : MonoBehaviour
             }
             else
             {
+                // if there is already an enemu, spawn proba has a malus
                 if (drawResult < spawnProbability * spawnMalusFactor)
                 {
                     if (!flyingMole)
@@ -115,6 +129,7 @@ public class EnemySpawner : MonoBehaviour
         groundMole = Instantiate(groundMolePrefab, newPosition, Quaternion.identity);
     }
 
+    // random angle focused on the side of the camera field of view
     private float RandomAngleInView()
     {
         float cameraYRot = this.transform.rotation.eulerAngles.y * Mathf.PI / 180;

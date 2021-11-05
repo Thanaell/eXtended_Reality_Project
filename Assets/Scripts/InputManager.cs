@@ -6,8 +6,10 @@ using UnityEngine.Events;
 
 public class InputManager : MonoBehaviour
 {
-    public UnityEvent TriggerPressedEvent;
-    public float fireCooldown;
+    [SerializeField]
+    private UnityEvent TriggerPressedEvent;
+    [SerializeField]
+    private float fireCooldown;
 
     private InputDevice controller;
     private bool isTriggerButtonPressed = false;
@@ -17,14 +19,14 @@ public class InputManager : MonoBehaviour
     {
         // https://docs.unity3d.com/Manual/xr_input.html
         var handDevices = new List<InputDevice>();
+        // Pico controller is a HeldInHan Controller
         var desiredCharacteristics = InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Controller;
 
         InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, handDevices);
 
         if (handDevices.Count >= 1)
         {
-            controller = handDevices[0];
-            //cursor.GetComponent<Renderer>().material.color = new Vector4(0, 0, 255, 255);
+            controller = handDevices[0]; // Pico controller is the first of the list (normally, the only one)
         }
     }
 
